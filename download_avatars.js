@@ -1,12 +1,12 @@
 const request = require('request');
 const fs = require('fs');
-const secrets = require('./secrets.js');
+const secrets = require('./secrets');
 
 const repoOwned = process.argv.slice(2);
 
 console.log('Welcome to the GitHub Avatar Downloader!');
 
-function getRepoContributors(repoOwner, repoName, cb) {
+getRepoContributors = (repoOwner, repoName, cb) => {
   const options = {
     url: `https://api.github.com/repos/${repoOwner}/${repoName}/contributors`,
     headers: {
@@ -17,7 +17,7 @@ function getRepoContributors(repoOwner, repoName, cb) {
   request(options, (err, res, body) => {
     cb(err, body);
   });
-}
+};
 
 getRepoContributors(repoOwned[0], repoOwned[1], (err, result) => {
   console.log('Errors:', err);
@@ -27,11 +27,11 @@ getRepoContributors(repoOwned[0], repoOwned[1], (err, result) => {
   });
 });
 
-function downloadImageByURL(url, filePath) {
+downloadImageByURL = (url, filePath) => {
   request
     .get(url)
     .on('error', (err) => {
       throw err;
     })
     .pipe(fs.createWriteStream(filePath));
-}
+};
